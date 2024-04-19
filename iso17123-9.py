@@ -20,8 +20,16 @@ if __name__ == '__main__':
     parser.add_argument('-full', action='store_true', help='Perform the full test procedure (default simplified)')
     parser.add_argument('-alpha', type=float, default=0.05, help='confidence interval (default: 0.05)')
 
+    simple_group = parser.add_argument_group('Simplified test procedure')
+    simple_group.add_argument('-u_t', type=float, required='-full' not in sys.argv, help='uncertainty quantity u_T for a targets center')
+
+    full_group = parser.add_argument_group('Full test procedure')
+    full_group.add_argument('-case', required='-full' in sys.argv, help='Which case for a target uncertainty should be used (see 8.5.1 in the ISO document)')
+    full_group.add_argument('-u_ms', type=float, required=any(arg.lower() == 'a' for arg in sys.argv), help='Manufacturer specified target center uncertainty (Case A)')
+    full_group.add_argument('-u_p', type=float, required=any(arg.lower() == 'b' for arg in sys.argv), help='derived target center uncertainty from other sources (Case B)')
 
     args = parser.parse_args()
+    print(sys.argv)
 
     # Validation
     if not os.path.exists(args.target_path):
@@ -32,6 +40,10 @@ if __name__ == '__main__':
         print('Unsupported manufacturer!')
         newline = '\n  '
         print(f'Supported manufacturers are: {newline}{newline.join(supported_formats)}')
+        sys.exit()
+
+    if args.full and args.case.lower() not in 'abc':
+        print('Invalid case! Must be A, B or C, see 8.5.1 in the ISO document')
         sys.exit()
 
     print(80*'-')
@@ -45,7 +57,7 @@ if __name__ == '__main__':
 
     if args.full:
         distances, single_distances, results = procedures.full(measurements)
-        print_results.full(args.alpha, distances, single_distances, results)
+        print_results.full(args.alpha, args.case, distances, single_distances, results, u_ms=args.u_ms, u_p=args.u_p)
     else:
         distances, results = procedures.simplified(measurements)
-        print_results.simplified(args.alpha, 0.0012, distances, results)
+        print_results.simplified(args.alpha, args.u_t, distances, results)

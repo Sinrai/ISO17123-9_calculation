@@ -16,7 +16,7 @@ def simplified(alpha, u_T, distances, results):
             test = '\033[91m■\033[0m'
         print(f'{key}: {str(round(value*1e3, 3)).rjust(6)}mm {test}')
 
-def full(alpha, distances, single_distances, results):
+def full(alpha, test_case, distances, single_distances, results, u_ms=None, u_p=None):
     print('Results (full test procedure)')
 
     residuals = dict()
@@ -81,13 +81,12 @@ def full(alpha, distances, single_distances, results):
     u_ISO_TLS = std_mean_0/np.sqrt(2)
     print(f'Standard uncertainty of the TLS for a point: {round(u_ISO_TLS*1e3, 3)}mm')
 
-    test_case = 'A'
     # Case A: get uT from manuf
     # Case B: sqrt(u_ISO_TLS**2+u_p**2)
     # Case C:
-    match test_case:
+    match test_case.upper():
         case 'A':
-            u_T = 0.004
+            u_T = u_ms
         case 'B':
             # sqrt(u_ISO_TLS**2+u_p**2)
             u_T = np.sqrt(u_ISO_TLS**2 + u_p**2)
