@@ -56,8 +56,8 @@ if __name__ == '__main__':
     measurements = read.read_path(args.target_path, args.manufacturer, args.ff, args.full)
 
     if args.full:
-        distances, single_distances, results = procedures.full(measurements)
-        print_results.full(args.alpha, args.case, distances, single_distances, results, u_ms=args.u_ms, u_p=args.u_p)
+        test = procedures.Full(measurements, test_case=args.case, u_ms=args.u_ms, u_p=args.u_p, alpha=args.alpha)
+        print_results.full(test)
     else:
-        distances, results = procedures.simplified(measurements)
-        print_results.simplified(args.alpha, args.u_t, distances, results)
+        test = procedures.Simplified(measurements, u_T=args.u_t, alpha=args.alpha)
+        print_results.simplified(test)
