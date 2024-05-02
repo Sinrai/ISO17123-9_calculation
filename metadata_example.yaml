@@ -1,0 +1,9 @@
+metadata:
+  device: "RTC360"
+  manufacturer: "Leica"
+  operator: "John Doe"
+  date: "2024-04-23"
+  temp: 4.2
+  humidity: 0.75
+  pressure: 954
+  comment: ""

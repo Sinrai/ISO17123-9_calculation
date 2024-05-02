@@ -3,6 +3,7 @@
 import argparse
 import os
 import sys
+import yaml
 
 from io_helpers import read, print_results
 from computations import procedures
@@ -28,6 +29,11 @@ if __name__ == '__main__':
     full_group.add_argument('-u_ms', type=float, help='Manufacturer specified target center uncertainty (Case A)')
     full_group.add_argument('-u_p', type=float, help='derived target center uncertainty from other sources (Case B)')
 
+    output_group = parser.add_argument_group('Output information')
+    output_group.add_argument('-metadata', help='Path to metadata.yaml')
+    output_group.add_argument('-pdf', help='Output Path to save generated pdf report')
+    output_group.add_argument('-csv', help='Output Path to save results in csv (appending if already existing)')
+
     args = parser.parse_args()
     print(sys.argv)
 
@@ -35,6 +41,9 @@ if __name__ == '__main__':
     if not os.path.exists(args.target_path):
         print('Invalid target_path!')
         sys.exit()
+    # if not os.path.exists(args.metadata):
+    #     print('Invalid metadata path!')
+    #     sys.exit()
 
     if args.manufacturer.lower() not in supported_formats:
         print('Unsupported manufacturer!')
@@ -54,6 +63,15 @@ if __name__ == '__main__':
     print(80*'-')
 
     measurements = read.read_path(args.target_path, args.manufacturer, args.ff, args.full)
+
+    # if args.metadata:
+    #     with open(file_path, 'r') as f:
+    #         metadata = yaml.safe_load(f)['metadata']
+    # else:
+    #     metadata = {
+    #         'stuff': '',
+    #         'st': '',
+    #     }
 
     # Interactive data collection:
     if args.full:
