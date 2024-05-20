@@ -3,16 +3,16 @@ import sys
 
 import pandas as pd
 
-def read_path(path, manufacturer, ff=False, full=False):
-    match manufacturer.lower():
+def read_path(config):
+    match config.format:
         case 'leica':
-            files = sorted(os.listdir(path))
+            files = sorted(os.listdir(config.data_directory))
 
-            if not ff:
-                print('Found the following files in the target path:')
+            if not config.ff:
+                print('Found the following files in the data directory:')
                 for nr, f in enumerate(files):
                     print(f'[{nr}] {f}')
-                order = input('Input file index and order of files to be used\nS1 (set 1-3) -> S2 (set 1-3)\nexample: 0,2\n> ')
+                order = input('Input file index and order of files to be used\nS1 (set 1-3) -> S2 (set 1-3)\nexample: 0,3\n> ')
                 if not order:
                     print('Default order used')
                 else:
@@ -21,12 +21,12 @@ def read_path(path, manufacturer, ff=False, full=False):
                 print(80*'-')
 
 
-            if full:
+            if config.ftp:
                 naming = [('S1', 1), ('S1', 2), ('S1', 3), ('S2', 1), ('S2', 2), ('S2', 3)]
                 if len(files) != 6:
                     print('Did not find 6 files for full test procedure')
                     sys.exit()
-            if not full:
+            if config.stp:
                 naming = [('S1', 1), ('S2', 1)]
                 if len(files) != 2:
                     print('Did not find 2 files for simplified test procedure')
@@ -39,7 +39,7 @@ def read_path(path, manufacturer, ff=False, full=False):
 
             dfs = []
             for i, f in enumerate(files):
-                df = pd.read_csv(os.path.join(path, f), header=0, usecols=['T', 'X', 'Y', 'Z'], names=['T', 'X', 'Y', 'Z'])
+                df = pd.read_csv(os.path.join(config.data_directory, f), header=0, usecols=['T', 'X', 'Y', 'Z'], names=['T', 'X', 'Y', 'Z'])
                 df[['S', 'w']] = naming[i]
                 dfs.append(df)
 

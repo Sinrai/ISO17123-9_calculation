@@ -12,9 +12,12 @@ combinations = [
     ('T3', 'T4'),
 ]
 
+def within_max_dev(results, max_dev):
+    return all(value < max_dev for value in results.values())
+
 
 class Simplified:
-    def __init__(self, data, u_T, alpha=0.05):
+    def __init__(self, data, config):
         self.distances = dict()
         for station in ['S1', 'S2']:
             for i, j in combinations:
@@ -29,13 +32,14 @@ class Simplified:
             'delta_3_4': self.distances[('S1', 'T3', 'T4')] - self.distances[('S2', 'T3', 'T4')],
         }
 
-        self.alpha = alpha
-        self.u_T = u_T
-        self.max_dev = stats.norm.ppf(1-self.alpha/2)*2*self.u_T
+        self.alpha = config.alpha
+        self.u_t = config.u_t
+        self.max_dev = stats.norm.ppf(1-self.alpha/2)*2*self.u_t
+        self.passed = within_max_dev(self.results, self.max_dev)
 
 
 class Full:
-    def __init__(self, data, test_case, u_ms, u_p, alpha):
+    def __init__(self, data, config):
         self.distances = dict()
         self.single_distances = dict()
         for station in ['S1', 'S2']:
@@ -55,9 +59,7 @@ class Full:
             'delta_3_4': self.distances[('S1', 'T3', 'T4')] - self.distances[('S2', 'T3', 'T4')],
         }
 
-        self.alpha = alpha
-        self.u_ms = u_ms
-        self.u_p = u_p
+        self.alpha = config.alpha
 
         self.residuals = dict()
         for station in ['S1', 'S2']:
@@ -119,12 +121,15 @@ class Full:
         self.std_mean_0 = np.sqrt(Omega_dist/30)
         self.u_ISO_TLS = self.std_mean_0/np.sqrt(2)
 
-        match test_case.upper():
+        match config.case.upper():
             case 'A':
-                self.u_T = self.u_ms
+                self.u_ms = config.u_ms
+                self.u_t = self.u_ms
             case 'B':
-                self.u_T = np.sqrt(self.u_ISO_TLS**2 + self.u_p**2)
+                self.u_p = config.u_p
+                self.u_t = np.sqrt(self.u_ISO_TLS**2 + self.u_p**2)
             case 'C':
-                self.u_T = self.u_ISO_TLS
+                self.u_t = self.u_ISO_TLS
 
-        self.max_dev = stats.norm.ppf(1-self.alpha/2)*2*self.u_T/np.sqrt(3)
+        self.max_dev = stats.norm.ppf(1-self.alpha/2)*2*self.u_t/np.sqrt(3)
+        self.passed = within_max_dev(self.results, self.max_dev)
