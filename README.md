@@ -7,7 +7,7 @@ This software was written as part of my BSc thesis.
 
 ## Installation
 
-Clone the repository
+Clone the repository.
 (WIP) To create a PDF report, a working LaTeX processor needs to be installed for pylatex to work.
 
 ## Usage
@@ -16,6 +16,46 @@ Export target coordinates from the manufacurers processing software in a txt fil
 
     python iso17123-9.py [options]
 
+#### Positional Arguments
+
+* data_directory: Path to the files with target center coordinates.
+* format: Which format the files are in. Currently supported: leica.
+
+#### Options
+
+* -h, --help: Show this help message and exit.
+* -ff: Fast-Forward (no interactive shell, files are treated to be in the correct order).
+* -ftp: Perform the full test procedure.
+* -stp: Perform the simplified test procedure.
+* -alpha ALPHA: Confidence interval (default: 0.05).
+
+#### Simplified Test Procedure
+
+* -u_t U_T: Uncertainty quantity u_t for a target's center (in mm).
+
+#### Full Test Procedure
+
+* -case CASE: Which case for a target uncertainty should be used (see 8.5.1 in the ISO document).
+* -u_ms U_MS: Manufacturer specified target center uncertainty (in mm).
+* -u_p U_P: Derived target center uncertainty from other sources (in mm).
+
+#### Output Information
+
+* -metadata METADATA: Path to metadata.yaml.
+* -pdf PDF: Output Path to save generated PDF report.
+* -csv CSV: Output Path to save results in CSV (appending if already existing).
+
+### Examples
+
+Perform Simplified Test Procedure
+
+    python iso17123-9.py /path/to/data leica -stp -u_t 0.1
+
+Perform Full Test Procedure with PDF report
+
+    python iso17123-9.py /path/to/data leica -ftp -case A -u_ms 5 -metadata /path/to/metadata.yaml -pdf /path/to/report.pdf
+
+
 ## Supported formats
 
-    (Leica) Cyclone Register 360
+* (Leica) Cyclone Register 360

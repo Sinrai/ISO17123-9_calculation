@@ -1,8 +1,10 @@
 metadata:
   device: "RTC360"
   manufacturer: "Leica"
+  serial_number: "2981551"
+  FW_version: "5.01.109"
   operator: "John Doe"
-  date: "2024-04-23"
+  datetime: "2024-04-23"
   temp: 4.2
   humidity: 0.75
   pressure: 954
