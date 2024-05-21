@@ -45,8 +45,8 @@ class Config:
             print('Invalid data directory!')
             sys.exit()
 
-        self.format = self.args.format
-        if self.format.lower() not in supported_formats:
+        self.format = self.args.format.lower()
+        if self.format not in supported_formats:
             print(f'Unsupported format! ({self.format})')
             print(f'Supported formats are: \n  {'\n  '.join(supported_formats)}')
             sys.exit()
@@ -152,7 +152,7 @@ class Config:
             self.metadata = dict()
         if not metadata_keys.issubset(self.metadata.keys()):
             if not self.ff:
-                print('Some Metadate information is missing! Do you want to add them?')
+                print('Some Metadate information is missing! Do you want to add them? (y/yes)')
                 q = input('> ')
                 if q.lower() in ['y', 'yes']:
                     for key in metadata_keys:

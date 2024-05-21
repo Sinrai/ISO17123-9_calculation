@@ -1,5 +1,6 @@
 import numpy as np
-
+from colorama import just_fix_windows_console
+just_fix_windows_console()
 
 # u_T: uncertainty of a target 3D coords
 def simplified(test):
