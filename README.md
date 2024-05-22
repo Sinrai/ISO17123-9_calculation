@@ -7,8 +7,15 @@ This software was written as part of my BSc thesis.
 
 ## Installation
 
-Clone the repository.
-(WIP) To create a PDF report, a working LaTeX processor needs to be installed for pylatex to work.
+    git clone https://github.com/Sinrai/ISO17123-9_calculation.git
+    cd ISO17123-9_calculation
+
+    # Create environment (encouraged) venv, conda, etc
+    pip install -r requirements.txt
+
+(WIP) To create a PDF report, a working LaTeX processor needs to be installed additonally to pylatex.
+
+    pip install pylatex
 
 ## Usage
 
