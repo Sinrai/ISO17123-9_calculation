@@ -13,7 +13,7 @@ This software was written as part of my BSc thesis.
     # Create environment (encouraged) venv, conda, etc
     pip install -r requirements.txt
 
-(WIP) To create a PDF report, a working LaTeX processor needs to be installed additonally to pylatex.
+To create a PDF report, a working LaTeX processor needs to be installed additonally to pylatex.
 
     pip install pylatex
 
