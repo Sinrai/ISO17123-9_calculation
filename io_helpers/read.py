@@ -4,6 +4,15 @@ import sys
 import pandas as pd
 
 def read_path(config):
+    """
+    Read and process data files based on the configuration.
+
+    Args:
+    - config (Config): Configuration object containing parsed arguments and metadata.
+
+    Returns:
+    - result_df (pd.DataFrame): Processed DataFrame containing imported coordinates.
+    """
     match config.format:
         case 'leica':
             files = sorted(os.listdir(config.data_directory))

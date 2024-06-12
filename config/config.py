@@ -8,9 +8,41 @@ supported_formats = ['leica']
 header = 'ISO 17123-9 Calculation Automatisation, see chapters 7.5 and 8.3 of the standard'
 metadata_keys = {'device','manufacturer','serial_number','FW_version','operator','datetime','temp','humidity','pressure','comment'}
 
-# Helper class to get all additional information, either via cmd line, yaml file or interactive CLI
+
 class Config:
+    """
+    Configuration class to handle input arguments, validation, and additional input.
+
+    Attributes:
+    - parser (ArgumentParser): Argument parser object for command line arguments.
+    - args (Namespace): Parsed arguments from the command line.
+    - data_directory (str): Path to the directory containing target center coordinates files.
+    - format (str): Format of the files. Currently supports only 'leica'.
+    - metadata_path (str): Path to the metadata.yaml file.
+    - ff (bool): Flag indicating if the fast-forward option is enabled.
+    - ftp (bool): Flag indicating if the full test procedure is enabled.
+    - stp (bool): Flag indicating if the simplified test procedure is enabled.
+    - alpha (float): Confidence interval level.
+    - u_t (float): Uncertainty quantity for the target's center.
+    - case (str): Case for the uncertainty of a target's center (A, B, or C).
+    - u_ms (float): Manufacturer specified target center uncertainty.
+    - u_p (float): Derived target center uncertainty from other sources.
+    - metadata (dict): Dictionary containing metadata information.
+    - pdf (str): Path to save the generated PDF report.
+    - csv (str): Path to save the results in CSV format.
+    - current_dt (str): Current date and time.
+
+    Methods:
+    - __init__(self): Initializes the Config object, parses arguments, validates inputs,
+      and collects additional metadata information.
+    """
+
     def __init__(self):
+        """
+        Initializes the Config object.
+
+        Parses command line arguments, validates inputs, and collects additional metadata information.
+        """
         self.parser = argparse.ArgumentParser(
                         prog = 'iso17123-9.py',
                         description = header)

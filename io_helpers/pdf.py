@@ -5,6 +5,13 @@ from pylatex.package import Package
 metadata_keys = {'device','manufacturer','serial_number','FW_version','operator','datetime','temp','humidity','pressure','comment'}
 
 class PDF_report(Document):
+    """
+    PDF Report class for ISO 17123-9 test results.
+
+    Args:
+    - test (object): Instance of the test results (either Simplified or Full).
+    - config (object): Configuration object containing metadata and test parameters.
+    """
     def __init__(self, test, config):
         geometry_options = {'tmargin': '1.5cm', 'lmargin': '1.5cm', 'rmargin': '1.5cm', 'bmargin': '1.5cm'}
         super().__init__('article', geometry_options=geometry_options, document_options=['a4paper'])
@@ -89,6 +96,13 @@ class PDF_report(Document):
                     table.add_row(f'{key}:', f'{str(round(value*1e3, 3)).rjust(6)}mm', check)
 
 def generate_report(test, config):
+    """
+    Generate a PDF report for ISO 17123-9 test results.
+
+    Args:
+    - test (object): Instance of the test results (either Simplified or Full).
+    - config (object): Configuration object containing metadata and test parameters.
+    """
     report = PDF_report(test, config)
     if config.pdf[-4:] == '.pdf':
         p = config.pdf[:-4]

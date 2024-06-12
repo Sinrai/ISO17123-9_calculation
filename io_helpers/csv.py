@@ -1,6 +1,13 @@
 
 
 def append_results(test, config):
+    """
+    Append results to a CSV file based on the test configuration and results.
+
+    Args:
+    - test (object): Instance of the test results (either Simplified or Full).
+    - config (object): Configuration object containing metadata and test parameters.
+    """
     if config.ftp:
         u_TLS_ISO = test.u_ISO_TLS
         match config.case:
